@@ -66,7 +66,8 @@ if __name__ == "__main__":
     # Convert driver ids to a set
     taxi_driver_sets = taxilinesCorrected.map(lambda x: (x[0], x[1])).distinct().map(lambda x: (x[0], {x[1]}))
 
-    # Aggregate driver_ids for each medallion id
+    # Aggregate driver_ids for each medallion id - idea taken from below
+    # https://stackoverflow.com/questions/30549322/is-it-more-efficient-to-use-unions-rather-than-joins-in-apache-spark-or-does-it
     aggregated_driver_sets = taxi_driver_sets.reduceByKey(lambda x, y: x.union(y))
 
     # Count the number of distinct drivers per medallion id
